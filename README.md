@@ -4,7 +4,8 @@ A complete, responsive one-page website for **JA'MOIR Grand Marquee & Event Comp
 
 ## What's included
 
-- Full-screen hero with the supplied video playing silently on a continuous loop (no play/volume controls)
+- Full-screen hero with the supplied video converted to H.264 for universal mobile support, playing silently on a continuous loop (no play/volume controls)
+- Mobile fallback: if a browser blocks autoplay (e.g. iOS Low Power Mode), a subtle "Tap to play the film" hint appears; one tap starts the video and the hint disappears
 - About section, feature highlights and a venue gallery with lightbox
 - Owners section with all four owner photos, correctly labelled
 - Instagram film section with the video in its original vertical format
@@ -14,7 +15,7 @@ A complete, responsive one-page website for **JA'MOIR Grand Marquee & Event Comp
 - Google Maps embed using the exact coordinates from the shared Maps link
 - Booking phone numbers taken from the venue's own "Booking Open" graphic
 - Mobile menu, scroll animations, sticky header, back-to-top button
-- Accessibility and SEO optimised (Lighthouse: Accessibility 98, Best Practices 100)
+- Accessibility and SEO optimised (Lighthouse: Accessibility 100, Best Practices 100, SEO 100)
 
 ## Files
 
@@ -27,7 +28,8 @@ jamoir-grand/
 ├── serve.js            Tiny local preview server (optional)
 ├── Start Website.bat   Double-click to launch locally (Windows)
 └── assets/
-    ├── video/jamoir-hero.mp4   Your video
+    ├── video/jamoir-hero.mp4        Original video (VP9 — kept as backup)
+    ├── video/jamoir-hero-h264.mp4   Mobile-friendly H.264 version used by the site
     └── img/
         ├── img-1.png           Updated JA'MOIR Grand crest logo (favicon & brand mark)
         ├── venue-1.jpg … venue-8.jpg   Stills extracted from your video for the gallery

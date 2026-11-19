@@ -86,35 +86,72 @@
     sections.forEach((section) => navObserver.observe(section));
   }
 
-  /* ---------- Hero video: silent, seamless, never-ending loop ---------- */
+  /* ---------- Hero video: silent, seamless, mobile-friendly loop ---------- */
 
   if (heroVideo) {
+    const hero = document.getElementById("home");
+    const heroTapHint = document.getElementById("heroTapHint");
+
     heroVideo.muted = true;
     heroVideo.defaultMuted = true;
     heroVideo.loop = true;
     heroVideo.playsInline = true;
+    heroVideo.setAttribute("playsinline", "");
+    heroVideo.setAttribute("webkit-playsinline", "");
 
-    const keepPlaying = () => {
+    const startVideo = () => {
       const attempt = heroVideo.play();
-      if (attempt && typeof attempt.catch === "function") attempt.catch(() => {});
+      if (attempt && typeof attempt.then === "function") {
+        attempt.then(() => hero.classList.remove("is-static")).catch(() => {});
+      } else {
+        hero.classList.remove("is-static");
+      }
     };
 
-    keepPlaying();
+    startVideo();
+
+    heroVideo.addEventListener("playing", () => hero.classList.remove("is-static"));
 
     /* Restart cleanly if a browser fires "ended" instead of looping. */
     heroVideo.addEventListener("ended", () => {
       heroVideo.currentTime = 0;
-      keepPlaying();
+      startVideo();
     });
 
-    /* Recover from buffering/stalls and tab switches. */
-    heroVideo.addEventListener("stalled", keepPlaying);
+    /* Retry whenever the browser becomes able to play again. */
+    ["stalled", "loadeddata", "canplay"].forEach((event) => {
+      heroVideo.addEventListener(event, startVideo);
+    });
+
     heroVideo.addEventListener("pause", () => {
-      if (!heroVideo.ended) keepPlaying();
+      if (!heroVideo.ended) startVideo();
     });
+
     document.addEventListener("visibilitychange", () => {
-      if (!document.hidden) keepPlaying();
+      if (!document.hidden) startVideo();
     });
+
+    /* iOS blocks autoplay in Low Power Mode — show a subtle tap hint and
+       start playback on the first touch anywhere in the page. */
+    let fallbackChecks = 0;
+    const fallbackTimer = setInterval(() => {
+      fallbackChecks += 1;
+      if (heroVideo.paused) hero.classList.add("is-static");
+      else hero.classList.remove("is-static");
+      if (fallbackChecks > 50) clearInterval(fallbackTimer);
+    }, 1200);
+
+    heroVideo.addEventListener("error", () => hero.classList.add("is-static"));
+
+    const unlockPlayback = () => {
+      startVideo();
+      document.removeEventListener("touchstart", unlockPlayback);
+      document.removeEventListener("click", unlockPlayback);
+    };
+
+    document.addEventListener("touchstart", unlockPlayback, { passive: true });
+    document.addEventListener("click", unlockPlayback);
+    if (heroTapHint) heroTapHint.addEventListener("click", unlockPlayback);
   }
 
   /* ---------- Gallery lightbox ---------- */

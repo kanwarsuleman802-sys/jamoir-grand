@@ -51,10 +51,11 @@
 
     <!-- ============ HERO ============ -->
     <section class="hero" id="home">
-      <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="auto" poster="assets/img/video-poster.jpg">
-        <source src="assets/video/jamoir-hero.mp4" type="video/mp4">
+      <video class="hero-video" id="heroVideo" autoplay muted loop playsinline webkit-playsinline x5-playsinline disablepictureinpicture preload="auto" poster="assets/img/video-poster.jpg">
+        <source src="assets/video/jamoir-hero-h264.mp4" type="video/mp4">
       </video>
       <div class="hero-overlay"></div>
+      <button class="hero-tap-hint" id="heroTapHint" type="button">Tap to play the film</button>
 
       <div class="hero-content container">
         <p class="eyebrow reveal">Bahawalnagar &middot; Punjab, Pakistan</p>
@@ -200,7 +201,7 @@
 
         <div class="film-frame reveal reveal-delay-2">
           <video controls playsinline preload="none" poster="assets/img/video-poster.jpg">
-            <source src="assets/video/jamoir-hero.mp4" type="video/mp4">
+            <source src="assets/video/jamoir-hero-h264.mp4" type="video/mp4">
             Your browser does not support video playback.
           </video>
           <p class="film-note">JA&rsquo;MOIR Grand &middot; Moments worth sharing</p>
